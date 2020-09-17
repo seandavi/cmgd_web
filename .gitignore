@@ -1,3 +1,5 @@
 __pycache__
 .venv
 .env
+*.egg-info
+/src/cmgd_web/.mypy_cache/
