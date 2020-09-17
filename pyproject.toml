@@ -1,5 +1,5 @@
 [tool.poetry]
-name = "gino-fastapi"
+name = "cmgd-web"
 version = "0.1.0"
 description = ""
 authors = ["Sean Davis <seandavi@gmail.com>"]
@@ -21,3 +21,7 @@ requests = "^2.24.0"
 [build-system]
 requires = ["poetry>=0.12"]
 build-backend = "poetry.masonry.api"
+
+[tool.poetry.plugins."cmgd_web.modules"]
+"users" = "cmgd_web.views.users"
+"nextflow" = "cmgd_web.views.nextflow"
