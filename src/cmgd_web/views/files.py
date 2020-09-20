@@ -52,7 +52,6 @@ async def files_change(event: dict):
     del(message['data'])
     payload2 = json.loads(payload)
     payload2.update(message['attributes'])
-    print(payload2)
     event = StorageEventModel(**payload2)
     db_event = await StorageEvent(**event.dict()).create()
     return db_event
