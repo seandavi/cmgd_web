@@ -2,10 +2,10 @@ import logging
 from importlib.metadata import entry_points
 
 from fastapi import FastAPI
-
+from .config import LOGLEVEL
 from .models import db
 
-logging.basicConfig(level=logging.INFO)
+logging.basicConfig(level=LOGLEVEL)
 logger = logging.getLogger(__name__)
 
 def load_modules(app=None):

@@ -38,8 +38,8 @@ class NextflowEventCollection(BaseModel):
 
 
 @router.get('/events')
-async def list_nextflow_events() -> NextflowEventCollection:
-    events = await NextflowEvent.query.gino.all()
+async def list_nextflow_events(limit: int=100, offset: int=0) -> NextflowEventCollection:
+    events = await NextflowEvent.query.limit(limit).offset(offset).gino.all()
     return {"hits": list([event.to_dict() for event in events])}
 
 
