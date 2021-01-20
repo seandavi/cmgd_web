@@ -4,7 +4,8 @@ from fastapi import APIRouter
 from pydantic import BaseModel, Field
 from typing import List
 
-from ..models.nextflow import NextflowEvent
+from ..models.nextflow import nextflow_event
+from ..models import db
 import datetime
 from _datetime import timezone
 
@@ -15,40 +16,45 @@ def init_app(app):
     app.include_router(router, prefix='/nextflow')
 
 
-class NextflowEventModel(BaseModel):
-    run_name: str = Field(alias="runName")
-    run_id: uuid.UUID = Field(alias="runId")
+class NFModel(BaseModel):
+    run_name: str = Field()
+    run_id: uuid.UUID = Field()
     event: str
-    utc_time: datetime.datetime = Field(
-        alias="utcTime")
-    trace: dict=None
-    metadata: dict=None
+    utc_time: datetime.datetime = Field()
+    trace: dict = None
+    metadata: dict = None
    
 
-class NextflowEventReturn(NextflowEventModel):
+class NFReturn(NFModel):
     """Represents a nextflow event
     """
     event_id: int
 
 
-class NextflowEventCollection(BaseModel):
+class NFCollection(BaseModel):
     """Represents a nextflow event
     """
-    hits: List[NextflowEventReturn]
+    hits: List[NFReturn]
 
 
-@router.get('/events')
-async def list_nextflow_events(limit: int=100, offset: int=0) -> NextflowEventCollection:
-    events = await NextflowEvent.query.limit(limit).offset(offset).gino.all()
-    return {"hits": list([event.to_dict() for event in events])}
+@router.get('/events', response_model = NFCollection)
+async def list_nextflow_events(limit: int=100, offset: int=0) -> NFCollection:
+    query = nextflow_event.select().limit(limit).offset(offset)
+    events = await db.fetch_all(query)
+    return NFCollection(hits = list([event.items() for event in events]))
 
 
 @router.post('/events')
-async def add_nextflow_event(event: NextflowEventModel):
-    db_event = await NextflowEvent(**event.dict()).create()
+async def add_nextflow_event(event: NFModel):
+    """Events from running Nextflow pipelines when using -with-weblog.
+
+    See [the Nextflow documentation](https://www.nextflow.io/docs/latest/tracing.html#weblog-via-http).
+    """
+    db_event = await NF(**event.items()).create()
     return db_event
 
 @router.get("/events/{id}")
 async def get_nextflow_event(id: uuid.UUID):
-    event = await NextflowEvent.get_or_404(id)
+    event = await NF.get_or_404(id)
     return event.to_dict()
+
