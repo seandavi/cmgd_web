@@ -1,8 +1,11 @@
 from sqlalchemy.engine.url import URL, make_url
 from starlette.config import Config
 from starlette.datastructures import Secret
+import os
 
-config = Config(".env")
+config_file = os.environ.get('ENV_FILE','.env')
+
+config = Config(config_file)
 
 LOGLEVEL = config("LOGLEVEL", default="WARNING")
 

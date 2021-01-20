@@ -18,11 +18,11 @@ fileConfig(config.config_file_name)
 # from myapp import mymodel
 # target_metadata = mymodel.Base.metadata
 from cmgd_web.config import DB_DSN
-from cmgd_web.main import db, load_modules
+from cmgd_web.main import load_modules, metadata
 
 load_modules()
 config.set_main_option("sqlalchemy.url", str(DB_DSN))
-target_metadata = db
+target_metadata = metadata
 
 # other values from the config, defined by the needs of env.py,
 # can be acquired:
