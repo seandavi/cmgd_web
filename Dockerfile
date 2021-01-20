@@ -6,6 +6,7 @@ RUN apk add --no-cache gcc musl-dev libffi-dev openssl-dev make postgresql-dev l
 RUN pip install poetry
 COPY . /src/
 WORKDIR /src
+COPY curatedmetagenomicdata-f056e9ef05f6.json curatedmetagenomicdata-f056e9ef05f6.json
 RUN python -m venv /env && . /env/bin/activate && poetry install --no-dev
 
 FROM base
