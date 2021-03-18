@@ -4,6 +4,7 @@ import json
 
 import sqlalchemy as sa
 from ..models import db
+from ..utils.uuid_gen import uuid_from_string
 
 from fastapi import APIRouter
 from pydantic import BaseModel, Field
@@ -34,6 +35,11 @@ class Sample(BaseModel):
 
 class SampleReturn(Sample):
     uuid: UUID
+
+@router.get('/uuid')
+def get_uuid_from_string(string: str):
+    return str(uuid_from_string(string))
+
 
 @router.post('/studies')
 async def create_study(study: Study) -> StudyReturn:

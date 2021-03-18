@@ -14,6 +14,7 @@ def init_app(app):
     app.include_router(router, prefix='/samples')
 
 
+
 @router.get('/samples')
 def get_samples():
     sel = samples.select()
