@@ -87,6 +87,7 @@ async def list_file_events(
     def get_full_event_entry(event):
         event = dict(event.items())
         event['download_url']=generate_download_signed_url_v4(event['name'])
+
         return event
 
     return {"hits": list([get_full_event_entry(event) for event in events])}
@@ -116,10 +117,11 @@ def generate_download_signed_url_v4(name: str):
     storage_client = storage.Client(project=PROJECT, credentials=credentials)
     bucket = storage_client.bucket(bucket_name)
     blob = bucket.blob(name)
+    filename = blob.name.split('/')[blob.name.count('/')]
 
     url = blob.generate_signed_url(
         version="v4",
-        response_disposition='attachment; filename=blob.txt',
+        response_disposition=f'attachment; filename={filename}',
         # This URL is valid for 15 minutes
         expiration=datetime.timedelta(minutes=30),
         # Allow GET requests using this URL.
