@@ -85,7 +85,7 @@ async def list_file_events(
     events_query = query.limit(limit).offset(offset)
     events = await db.fetch_all(events_query)
     def get_full_event_entry(event):
-        event = event.to_dict()
+        event = dict(event.items())
         event['download_url']=generate_download_signed_url_v4(event['name'])
         return event
 
@@ -108,7 +108,7 @@ def generate_download_signed_url_v4(name: str):
     from google.oauth2 import service_account
     import os
 
-    KEYFILE = 'curatedmetagenomicdata-f056e9ef05f6.json'
+    KEYFILE = 'curatedmetagenomicdata-60b3f98b417c.json'
     PROJECT = 'curatedmetagenomicdata'
 
     credentials = service_account.Credentials.from_service_account_file(KEYFILE)
@@ -119,6 +119,7 @@ def generate_download_signed_url_v4(name: str):
 
     url = blob.generate_signed_url(
         version="v4",
+        response_disposition='attachment; filename=blob.txt',
         # This URL is valid for 15 minutes
         expiration=datetime.timedelta(minutes=30),
         # Allow GET requests using this URL.
