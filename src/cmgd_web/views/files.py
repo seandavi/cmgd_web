@@ -1,7 +1,6 @@
 import uuid
 import base64
 import json
-import structlog
 
 import sqlalchemy as sa
 
@@ -14,8 +13,7 @@ from _datetime import timezone
 
 from ..models.files import StorageEvent
 from ..models import db
-
-logger = structlog.getLogger()
+from ..logging import logger
 
 router = APIRouter()
 
@@ -69,7 +67,7 @@ async def files_change(event: dict):
     t = StorageEvent.__table__
 
     query = t.insert().values(**event.dict())
-    logger.msg("INFO",message=event.dict())
+    logger.info(**event.dict())
     db_event = await db.execute(query)
 
     return db_event

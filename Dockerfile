@@ -1,4 +1,4 @@
-FROM python:3.8-buster as base
+FROM python:3.8 as base
 
 MAINTAINER Sean Davis <seandavi@gmail.com>
 FROM base as builder

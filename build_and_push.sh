@@ -1,4 +1,6 @@
 #!/bin/bash
+set -xe
+
 PROJECT='cmgd-telemetry'
 REVISION=`git rev-parse HEAD`
 docker build -t seandavi/$PROJECT .

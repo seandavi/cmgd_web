@@ -1,17 +1,18 @@
-.git/
+.git
 
 build
 dist
 *.egg-info
-*.egg/
+*.egg
 *.pyc
 *.swp
 
 .tox
 .coverage
-html/*
+html
 __pycache__
 
 # Compiled Documentation
 docs/_build
 .venv
+.mypy_cache
