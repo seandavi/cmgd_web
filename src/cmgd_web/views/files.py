@@ -14,7 +14,8 @@ from _datetime import timezone
 
 from ..models.files import StorageEvent
 from ..models import db
-from ..logging import logger
+
+logger = structlog.getLogger()
 
 router = APIRouter()
 
@@ -68,7 +69,7 @@ async def files_change(event: dict):
     t = StorageEvent.__table__
 
     query = t.insert().values(**event.dict())
-    logger.info(message=event.dict())
+    logger.msg("INFO",message=event.dict())
     db_event = await db.execute(query)
 
     return db_event
