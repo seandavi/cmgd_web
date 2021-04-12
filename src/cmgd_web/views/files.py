@@ -63,7 +63,9 @@ async def files_change(event: dict):
     payload2 = json.loads(payload)
     payload2.update(message['attributes'])
     event = StorageEventModel(**payload2)
-    db_event = await StorageEvent(**event.dict()).create()
+    t = StorageEvent.__table__
+    query = t.insert().values(**event.dict())
+    db_event = await db.execute(query)
     return db_event
 
 @router.get("/changes", response_model=StorageEventCollection)
