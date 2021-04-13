@@ -19,10 +19,10 @@ def init_app(app):
 
 
 class NFModel(BaseModel):
-    run_name: str = Field()
-    run_id: uuid.UUID = Field()
+    run_name: str = Field(alias='runName')
+    run_id: uuid.UUID = Field(alias='runId')
     event: str
-    utc_time: datetime.datetime = Field()
+    utc_time: datetime.datetime = Field(alias='utcTime')
     trace: dict = None
     metadata: dict = None
    
@@ -52,7 +52,7 @@ async def add_nextflow_event(event: NFModel):
 
     See [the Nextflow documentation](https://www.nextflow.io/docs/latest/tracing.html#weblog-via-http).
     """
-    logger.info('INFO',**event.dict())
+    logger.info(**event.dict())
     t = nextflow_event
     query = t.insert().values(**event.dict())
     db_event = await db.execute(query)
