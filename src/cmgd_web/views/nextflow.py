@@ -50,7 +50,9 @@ async def add_nextflow_event(event: NFModel):
 
     See [the Nextflow documentation](https://www.nextflow.io/docs/latest/tracing.html#weblog-via-http).
     """
-    db_event = await NF(**event.items()).create()
+    t = nextflow_event
+    query = t.insert().values(**event.dict())
+    db_event = await db.execute(query)
     return db_event
 
 @router.get("/events/{id}")
