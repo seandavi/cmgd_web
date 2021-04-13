@@ -1,11 +1,23 @@
-import structlog
+import logging
+import google.cloud.logging
 
 
-structlog.configure(
-    processors = [
-        structlog.stdlib.add_log_level,
-        structlog.processors.JSONRenderer()
-    ]
-)
+client = google.cloud.logging.Client()
+# Custom formatter returns a structure, than a string
 
-logger = structlog.get_logger()
+
+class CustomFormatter(logging.Formatter):
+    def format(self, record):
+        logmsg = super(CustomFormatter, self).format(record)
+        res = {'msg': logmsg}
+        res.update(record.args)
+        return res
+
+
+# Setup handler explicitly -- different labels
+handler = client.get_default_handler()
+handler.setFormatter(CustomFormatter())
+
+# Setup logger explicitly with this handler
+logger = logging.getLogger()
+logger.addHandler(handler)
