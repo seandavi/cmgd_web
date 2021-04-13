@@ -1,3 +1,5 @@
-import structlog
+from loguru import logger
+import sys
 
-logger = structlog.get_logger()
+
+logger.add(sys.stdout, serialize=True)

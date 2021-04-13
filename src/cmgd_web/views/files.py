@@ -67,7 +67,7 @@ async def files_change(event: dict):
     t = StorageEvent.__table__
 
     query = t.insert().values(**event.dict())
-    logger.info(**event.dict())
+    logger.info(event.dict())
     db_event = await db.execute(query)
 
     return db_event
