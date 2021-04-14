@@ -34,6 +34,29 @@ def uuid_from_srrs(srrs: List[str]) -> uuid:
     return str(res)
 
 
+def uuid_from_ncbi_accessions(srrs: str) -> uuid.UUID:
+    """Convert a semicolon-separated (unsorted) ncbi accession list to uuid
+
+    Parameters
+    ----------
+    srrs: str
+        A semicolon-separated list like "SRR1234;SRR4567;ERR8347"
+
+    Returns
+    -------
+    A `uuid.UUID` object
+
+    Examples
+    --------
+    >>> from cmgd_web.metadata_cli import uuid_from_ncbi_accessions
+    >>> srrs =  "SRR1234;SRR4567;ERR8347"
+    >>> uuid_from_ncbi_accessions(srrs)
+
+    """
+    res = uuid_from_string(sorted(srrs.split(';')))
+    return res
+
+
 def uuid_from_string(string: str) -> uuid:
     """Generate a uuid from a string
 
