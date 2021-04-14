@@ -10,7 +10,8 @@ dist
 .tox
 .coverage
 html
-__pycache__
+**/__pycache__
+**/*pyc
 
 # Compiled Documentation
 docs/_build
