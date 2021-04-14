@@ -51,9 +51,9 @@ def uuid_from_ncbi_accessions(srrs: str) -> uuid.UUID:
     >>> from cmgd_web.metadata_cli import uuid_from_ncbi_accessions
     >>> srrs =  "SRR1234;SRR4567;ERR8347"
     >>> uuid_from_ncbi_accessions(srrs)
-
+    '48bcd375-d95b-54a7-9948-b7f038e442c5'
     """
-    res = uuid_from_string(sorted(srrs.split(';')))
+    res = uuid_from_srrs(sorted(srrs.split(';')))
     return res
 
 
