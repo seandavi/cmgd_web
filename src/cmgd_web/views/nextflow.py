@@ -9,7 +9,7 @@ from ..models import db
 import datetime
 from _datetime import timezone
 
-from ..logging import logger
+from ..logs import logger
 
 router = APIRouter()
 

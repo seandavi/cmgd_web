@@ -13,7 +13,7 @@ from _datetime import timezone
 
 from ..models.files import StorageEvent
 from ..models import db
-from ..logging import logger
+from ..logs import logger
 
 router = APIRouter()
 
